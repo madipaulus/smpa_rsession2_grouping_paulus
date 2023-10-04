@@ -1,6 +1,6 @@
 ---
 title: "Lab 01 - Grouping/Filtering"
-author: "Your Name Here"
+author: "Madison Paulus, Brooks Rupar, Layla Nayfeh"
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 format:
   html:
@@ -58,8 +58,16 @@ glimpse(wv_winred_contribs)
 
 **Q2** Which West Virginia city provided the largest number of contributions? How many?
 **A2** 
-
+Martinsburg 781
 ```{r}
+
+wvalarge <-
+  wv_winred_contribs %>%
+  group_by(city) %>%
+  arrange(amount) %>% 
+  summarise(total_contribs = n()) 
+
+
 
 
 
@@ -69,32 +77,40 @@ glimpse(wv_winred_contribs)
 ```
 **Q3** Which West Virginia city accounted for the fewest contributions? How many?
 **A3** 
-
+Auburn, belle etc. 1
 ```{r}
 
-
+wvalarge <-
+  wv_winred_contribs %>%
+  group_by(city) %>%
+  arrange(desc(amount)) %>% 
+  summarise(total_contribs = n())
 
 
 
 ```
 **Q4** What's your best educated guess to explain why the city identified in question 2 had more contributions compared to the cities identified in question 3? Hint: you won't find the answer in the data, you'll need to do some quick web research. You do not need to write any code for this question, so no codeblock is provided.  
 **A4** 
-
+high population
 **Q5** What recipient got the largest total amount of money? How many contributions did they receive and what was the average donation?
 **A5** 
-
+##SAVE AMERICA JOINT FUNDRAISING COMMITTEE, $66,972, 2448, $27
 ```{r}
 
+WVS_S5 <-
+  wv_winred_contribs %>%
+  group_by(memo_text) %>%
+  arrange(desc(amount)) %>% 
+  summarise(total_contribs = n(), total_amount = sum(amount), average_amount = mean(amount))
 
 
-
-
+## 
 
 ```
 
 **Q6** What is that top recipient and what explains its popularity? Hint: this will require web research, you won't be able to answer this purely from the data set.  You do not need to write any code for this question, so no codeblock is provided.  
 **A6** 
-
+it's the main fundraising org for Donald Trump
 
 
 **Q7**. Produce a summary table that has the following information for West Virginia as a whole (the whole state, not by city):
@@ -108,8 +124,14 @@ glimpse(wv_winred_contribs)
 Store it as a variable object called `wv_summary` so that you can examine it with the data viewer. What newsworthy nuggets jump out at you that you could imagine dropping into a news story? Write a few summary sentences with overall findings.
 
 **A7**. 
-
+Why is the max amount around $5,000 considering how low that seems for campaign contributions? Could be interesting to write about the impact that such small donations still have on campaigns.
 ```{r}
+
+wv_summary <-
+  wv_winred_contribs %>%
+  group_by(memo_text) %>%
+  arrange(desc(amount)) %>% 
+  summarise(total_contribs = n(), total_amount = sum(amount), average_amount = mean(amount), average_mode = mode(amount), average_min = min(amount), max_amount = max(amount))
 
 
 
